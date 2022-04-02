@@ -1,4 +1,4 @@
-package com.veldan.template.actors.masks.mask
+package com.veldan.template.actors.masks.normal
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch

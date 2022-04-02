@@ -5,25 +5,30 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.Disposable
-import com.badlogic.gdx.utils.viewport.Viewport
-import com.veldan.template.utils.HEIGHT
-import com.veldan.template.utils.WIDTH
+import com.badlogic.gdx.utils.viewport.ExtendViewport
+import com.badlogic.gdx.utils.viewport.FitViewport
 import com.veldan.template.manager.NavigationManager
-import com.veldan.template.utils.addProcessors
-import com.veldan.template.utils.beginend
+import com.veldan.template.utils.*
 import com.veldan.template.utils.controller.ScreenController
 
 abstract class AdvancedScreen : ScreenAdapter(), AdvancedInputProcessor {
-
-    abstract val viewport  : Viewport
     abstract val controller: ScreenController
 
-    val stage by lazy { AdvancedStage(viewport) }
+    private val backViewport by lazy { ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()) }
+    private val backStage    by lazy { AdvancedStage(backViewport) }
+
+    private val onceAddBackBackground  = Once()
+    private val onceAddFrontBackground = Once()
+
+    val viewport by lazy { FitViewport(WIDTH, HEIGHT) }
+    val stage    by lazy { AdvancedStage(viewport) }
 
     val inputMultiplexer = InputMultiplexer()
 
-    var background: Texture? = null
+    var backBackground : Texture? = null
+    var background     : Texture? = null
 
 
 
@@ -33,12 +38,16 @@ abstract class AdvancedScreen : ScreenAdapter(), AdvancedInputProcessor {
     }
 
     override fun resize(width: Int, height: Int) {
+        backViewport.update(width, height, true)
         viewport.update(width, height, true)
     }
 
     override fun render(delta: Float) {
-        drawBackground()
+        backStage.render()
         stage.render()
+
+        addBackBackground()
+        addFrontBackground()
     }
 
     override fun hide() {
@@ -46,7 +55,7 @@ abstract class AdvancedScreen : ScreenAdapter(), AdvancedInputProcessor {
     }
 
     override fun dispose() {
-        stage.dispose()
+        disposeAll(backStage, stage)
         inputMultiplexer.clear()
         if (controller is Disposable) (controller as Disposable).dispose()
     }
@@ -58,12 +67,16 @@ abstract class AdvancedScreen : ScreenAdapter(), AdvancedInputProcessor {
 
 
 
-    private fun drawBackground() {
-        stage.batch.apply {
-            disableBlending()
-            beginend { background?.let { draw(it, 0f, 0f, WIDTH, HEIGHT) } }
-            enableBlending()
-        }
+    private fun addBackBackground() {
+        backBackground?.let { img -> onceAddBackBackground.once {
+            backStage.addActor(Image(img).apply { setSize(backViewport.worldWidth, backViewport.worldHeight) })
+        } }
+    }
+
+    private fun addFrontBackground() {
+        background?.let { img -> onceAddFrontBackground.once {
+            stage.addActor(Image(img).apply { setSize(WIDTH, HEIGHT) })
+        } }
     }
 
 }

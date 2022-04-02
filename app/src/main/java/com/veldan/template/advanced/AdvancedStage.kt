@@ -28,6 +28,7 @@ open class AdvancedStage : Stage {
     }
 
     fun render() {
+        viewport.apply(true)
         act()
         draw()
     }

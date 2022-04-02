@@ -1,4 +1,4 @@
-package com.veldan.template.actors.masks.mask
+package com.veldan.template.actors.masks.inverted
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.veldan.template.utils.controller.GroupController
 import com.veldan.template.utils.zeroScreenVector
 
-class MaskController(override val group: Mask) : GroupController {
+class InvertedMaskController(override val group: InvertedMask) : GroupController {
 
     private lateinit var localToScreenCoordinates: Vector2
     private lateinit var localToScreenSize       : Vector2
@@ -35,29 +35,29 @@ class MaskController(override val group: Mask) : GroupController {
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST)
         Gdx.gl.glScissor(mX.toInt(), mY.toInt(), mW.toInt(), mH.toInt())
 
-        with(group) { if (mask != null) batch?.drawMask(parentAlpha) else drawSuper(batch, parentAlpha) }
+        batch?.drawMask(parentAlpha)
+
         Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST)
     }
 
     private fun Batch.drawMask(parentAlpha: Float) {
         Gdx.gl.glColorMask(false, false, false, true)
 
-        setBlendFunction(GL20.GL_ONE, GL20.GL_ZERO)
+        setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA)
 
-        setColor(0f, 0f, 0f, parentAlpha)
-        with(group) { draw(mask, x, y, width, height) }
+        group.drawSuper(this, parentAlpha)
 
         drawMasked(parentAlpha)
     }
 
     private fun Batch.drawMasked(parentAlpha: Float) {
         setBlendFunction(GL20.GL_ZERO, GL20.GL_SRC_ALPHA)
-        group.drawSuper(this, parentAlpha)
+        with(group) { draw(texture, x, y, width, height) }
         flush()
 
         Gdx.gl.glColorMask(true, true, true, true)
         setBlendFunction(GL20.GL_DST_ALPHA, GL20.GL_ONE_MINUS_DST_ALPHA)
-        group.drawSuper(this, parentAlpha)
+        with(group) { draw(texture, x, y, width, height) }
         flush()
 
         setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)

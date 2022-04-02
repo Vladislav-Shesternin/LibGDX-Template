@@ -1,4 +1,4 @@
-package com.veldan.template.actors.label
+package com.veldan.template.actors.label.spinning
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.take
 
-class RollingLabelController(override val group: RollingLabel) : GroupController, Disposable {
+class SpinningLabelController(override val group: SpinningLabel) : GroupController, Disposable {
 
     companion object {
         const val LABEL_SPACE_PERCENT = 10
@@ -54,7 +54,7 @@ class RollingLabelController(override val group: RollingLabel) : GroupController
         width
     }
 
-    fun roll() {
+    fun spin() {
         with(group) {
             val timeRollNext = timeRoll + ((timeRoll / 100) * LABEL_SPACE_PERCENT)
             val finishFlow   = MutableSharedFlow<Boolean>(replay = 2)

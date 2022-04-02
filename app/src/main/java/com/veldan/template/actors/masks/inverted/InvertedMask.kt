@@ -1,4 +1,4 @@
-package com.veldan.template.actors.masks.invertedMask
+package com.veldan.template.actors.masks.inverted
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch

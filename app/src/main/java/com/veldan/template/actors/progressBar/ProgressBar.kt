@@ -3,7 +3,7 @@ package com.veldan.template.actors.progressBar
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.veldan.template.actors.masks.invertedMask.InvertedMask
+import com.veldan.template.actors.masks.inverted.InvertedMask
 import com.veldan.template.advanced.AbstractAdvancedGroup
 import com.veldan.template.manager.assets.SpriteManager
 import com.veldan.template.utils.disable

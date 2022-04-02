@@ -1,15 +1,13 @@
-package com.veldan.template.actors.masks.invertedMask
+package com.veldan.template.actors.masks.normal
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
 import com.veldan.template.utils.controller.GroupController
-import com.veldan.template.utils.listeners.toClickable
-import com.veldan.template.utils.log
 import com.veldan.template.utils.zeroScreenVector
 
-class InvertedMaskController(override val group: InvertedMask) : GroupController {
+class MaskController(override val group: Mask) : GroupController {
 
     private lateinit var localToScreenCoordinates: Vector2
     private lateinit var localToScreenSize       : Vector2
@@ -37,29 +35,29 @@ class InvertedMaskController(override val group: InvertedMask) : GroupController
         Gdx.gl.glEnable(GL20.GL_SCISSOR_TEST)
         Gdx.gl.glScissor(mX.toInt(), mY.toInt(), mW.toInt(), mH.toInt())
 
-        batch?.drawMask(parentAlpha)
-
+        with(group) { if (mask != null) batch?.drawMask(parentAlpha) else drawSuper(batch, parentAlpha) }
         Gdx.gl.glDisable(GL20.GL_SCISSOR_TEST)
     }
 
     private fun Batch.drawMask(parentAlpha: Float) {
         Gdx.gl.glColorMask(false, false, false, true)
 
-        setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA)
+        setBlendFunction(GL20.GL_ONE, GL20.GL_ZERO)
 
-        group.drawSuper(this, parentAlpha)
+        setColor(0f, 0f, 0f, parentAlpha)
+        with(group) { draw(mask, x, y, width, height) }
 
         drawMasked(parentAlpha)
     }
 
     private fun Batch.drawMasked(parentAlpha: Float) {
         setBlendFunction(GL20.GL_ZERO, GL20.GL_SRC_ALPHA)
-        with(group) { draw(texture, x, y, width, height) }
+        group.drawSuper(this, parentAlpha)
         flush()
 
         Gdx.gl.glColorMask(true, true, true, true)
         setBlendFunction(GL20.GL_DST_ALPHA, GL20.GL_ONE_MINUS_DST_ALPHA)
-        with(group) { draw(texture, x, y, width, height) }
+        group.drawSuper(this, parentAlpha)
         flush()
 
         setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)

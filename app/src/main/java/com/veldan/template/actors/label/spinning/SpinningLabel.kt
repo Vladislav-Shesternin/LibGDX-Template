@@ -1,20 +1,20 @@
-package com.veldan.template.actors.label
+package com.veldan.template.actors.label.spinning
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
-import com.veldan.template.actors.label.RollingLabelController.Companion.TIME_DELAY
-import com.veldan.template.actors.label.RollingLabelController.Companion.TIME_ROLL_CURRENT
-import com.veldan.template.actors.masks.mask.Mask
+import com.veldan.template.actors.label.spinning.SpinningLabelController.Companion.TIME_DELAY
+import com.veldan.template.actors.label.spinning.SpinningLabelController.Companion.TIME_ROLL_CURRENT
+import com.veldan.template.actors.masks.normal.Mask
 import com.veldan.template.advanced.AbstractAdvancedGroup
 
-class RollingLabel(
+class SpinningLabel(
     val text      : CharSequence,
     val labelStyle: Label.LabelStyle,
     var timeDelay : Float = TIME_DELAY,
     var timeRoll  : Float = TIME_ROLL_CURRENT,
     val alignment : Int   = Align.center
 ): AbstractAdvancedGroup() {
-    override val controller = RollingLabelController(this)
+    override val controller = SpinningLabelController(this)
 
     val mask         = Mask()
     var labelCurrent = Label(text, labelStyle)
@@ -43,11 +43,15 @@ class RollingLabel(
         labelNext.setAlignment(align)
         with(controller) {
             setPositionLabelNext()
-            roll()
+            spin()
         }
     }
 
 
+
+    fun setText(text: CharSequence) {
+        controller.setText(text)
+    }
 
     fun addCurrentLabel() {
         mask.addActor(labelCurrent)
@@ -58,10 +62,6 @@ class RollingLabel(
             labelCurrent.setAlignment(Align.left)
             addNextLabel()
         } else labelCurrent.setAlignment(alignment)
-    }
-
-    fun setText(text: CharSequence) {
-        controller.setText(text)
     }
 
 
