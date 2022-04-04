@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -19,20 +20,19 @@ abstract class AdvancedScreen : ScreenAdapter(), AdvancedInputProcessor {
     private val backViewport by lazy { ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()) }
     private val backStage    by lazy { AdvancedStage(backViewport) }
 
-    private val onceAddBackBackground  = Once()
-    private val onceAddFrontBackground = Once()
-
     val viewport by lazy { FitViewport(WIDTH, HEIGHT) }
     val stage    by lazy { AdvancedStage(viewport) }
 
     val inputMultiplexer = InputMultiplexer()
 
-    var backBackground : Texture? = null
-    var background     : Texture? = null
+    val backBackgroundImage  = Image()
+    val backgroundImage      = Image()
 
 
 
     override fun show() {
+        backStage.addActor(backBackgroundImage)
+        stage.addActor(backgroundImage)
         Gdx.input.inputProcessor = inputMultiplexer.apply { addProcessors(this@AdvancedScreen, stage) }
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
     }
@@ -45,9 +45,6 @@ abstract class AdvancedScreen : ScreenAdapter(), AdvancedInputProcessor {
     override fun render(delta: Float) {
         backStage.render()
         stage.render()
-
-        addBackBackground()
-        addFrontBackground()
     }
 
     override fun hide() {
@@ -67,16 +64,23 @@ abstract class AdvancedScreen : ScreenAdapter(), AdvancedInputProcessor {
 
 
 
-    private fun addBackBackground() {
-        backBackground?.let { img -> onceAddBackBackground.once {
-            backStage.addActor(Image(img).apply { setSize(backViewport.worldWidth, backViewport.worldHeight) })
-        } }
+    fun setBackBackground(texture: Texture) {
+        backBackgroundImage.apply {
+            drawable = TextureRegionDrawable(texture)
+            setSize(backViewport.worldWidth, backViewport.worldHeight)
+        }
     }
 
-    private fun addFrontBackground() {
-        background?.let { img -> onceAddFrontBackground.once {
-            stage.addActor(Image(img).apply { setSize(WIDTH, HEIGHT) })
-        } }
+    fun setBackground(texture: Texture) {
+        backgroundImage.apply {
+            drawable = TextureRegionDrawable(texture)
+            setSize(WIDTH, HEIGHT)
+        }
+    }
+
+    fun setBackgrounds(backTexture: Texture, frontTexture: Texture) {
+        setBackBackground(backTexture)
+        setBackground(frontTexture)
     }
 
 }

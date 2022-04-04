@@ -12,7 +12,7 @@ lateinit var assetManager: AssetManager private set
 
 class LibGDXGame : AdvancedGame() {
 
-    private val color = Color.BLACK
+    private val color = Color.DARK_GRAY
 
 
 
