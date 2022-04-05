@@ -2,7 +2,7 @@ package com.veldan.template.manager
 
 import android.content.Context
 import android.media.AudioManager
-import com.veldan.template.game
+import com.veldan.template.main.game
 
 object AudioManager {
 

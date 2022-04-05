@@ -136,5 +136,5 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.veldan.template/com.veldan.template.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.veldan.template/com.veldan.template.main.AndroidLauncher'
 }

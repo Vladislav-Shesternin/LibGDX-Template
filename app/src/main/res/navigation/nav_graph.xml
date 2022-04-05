@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/libGDXFragment"
-        android:name="com.veldan.template.LibGDXFragment"
+        android:name="com.veldan.template.main.LibGDXFragment"
         android:label="LibGDXFragment" />
 
 </navigation>

@@ -2,7 +2,7 @@ package com.veldan.template.manager
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
-import com.veldan.template.game
+import com.veldan.template.main.game
 
 object NavigationManager {
 

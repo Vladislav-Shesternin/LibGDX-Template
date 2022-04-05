@@ -1,4 +1,4 @@
-package com.veldan.template
+package com.veldan.template.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

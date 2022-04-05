@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.veldan.template.game
+import com.veldan.template.main.game
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.take
 

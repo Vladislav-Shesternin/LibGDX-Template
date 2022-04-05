@@ -1,4 +1,4 @@
-package com.veldan.template
+package com.veldan.template.main
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
