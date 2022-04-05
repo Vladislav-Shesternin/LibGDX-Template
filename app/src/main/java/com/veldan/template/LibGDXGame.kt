@@ -7,12 +7,13 @@ import com.veldan.template.advanced.AdvancedGame
 import com.veldan.template.manager.NavigationManager
 import com.veldan.template.screens.test.TestScreen
 
-lateinit var game        : LibGDXGame   private set
-lateinit var assetManager: AssetManager private set
+lateinit var game: LibGDXGame private set
 
-class LibGDXGame : AdvancedGame() {
+class LibGDXGame(val activity: AndroidLauncher) : AdvancedGame() {
 
     private val color = Color.DARK_GRAY
+
+    lateinit var assetManager: AssetManager private set
 
 
 

@@ -2,11 +2,11 @@ package com.veldan.template.manager
 
 import android.content.Context
 import android.media.AudioManager
-import com.veldan.template.activityContext
+import com.veldan.template.game
 
 object AudioManager {
 
-    val audioManager      = activityContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    val audioManager      = game.activity.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     val maxVolumeLevel    = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
     val volumeLevel get() = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 

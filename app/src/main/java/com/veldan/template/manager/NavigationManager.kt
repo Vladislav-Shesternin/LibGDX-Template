@@ -7,12 +7,15 @@ import com.veldan.template.game
 object NavigationManager {
 
     private val backStack = mutableListOf<Screen>()
+
     var key: Int? = null
         private set
 
+
+
     fun navigate(to: Screen, from: Screen? = null, key: Int? = null) {
         Gdx.app.postRunnable {
-            NavigationManager.key = key
+            this.key = key
 
             game.screen = to
             from?.let { backStack.add(it) }
@@ -22,7 +25,7 @@ object NavigationManager {
 
     fun back(key: Int? = null) {
         Gdx.app.postRunnable {
-            NavigationManager.key = key
+            this.key = key
 
             if (backStack.isEmpty()) exit()
             else game.screen = backStack.removeLast()

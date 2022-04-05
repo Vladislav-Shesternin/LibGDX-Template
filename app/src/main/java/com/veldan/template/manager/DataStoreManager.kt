@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.veldan.template.activityContext
+import com.veldan.template.game
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.take
 
@@ -18,15 +18,15 @@ object DataStoreManager {
 
 
     suspend fun collectBalance(block: suspend (Long) -> Unit) {
-        activityContext.dataStore.data.collect { block(it[BALANCE_KEY] ?: 10_000L) }
+        game.activity.dataStore.data.collect { block(it[BALANCE_KEY] ?: 10_000L) }
     }
 
     suspend fun updateBalance(block: suspend (Long) -> Long) {
-        activityContext.dataStore.edit { it[BALANCE_KEY] = block(it[BALANCE_KEY] ?: 10_000L) }
+        game.activity.dataStore.edit { it[BALANCE_KEY] = block(it[BALANCE_KEY] ?: 10_000L) }
     }
 
     suspend fun getBalance() = CompletableDeferred<Long>().also { continuation ->
-        activityContext.dataStore.data.take(1).collect { continuation.complete(it[BALANCE_KEY] ?: 0L) }
+        game.activity.dataStore.data.take(1).collect { continuation.complete(it[BALANCE_KEY] ?: 0L) }
     }.await()
 
 }

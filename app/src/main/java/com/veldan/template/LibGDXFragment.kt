@@ -15,6 +15,6 @@ class LibGDXFragment : AndroidFragmentApplication() {
             useAccelerometer = false
             useCompass = false
         }
-        return initializeForView(LibGDXGame(), conf)
+        return initializeForView(LibGDXGame(requireActivity() as AndroidLauncher), conf)
     }
 }
