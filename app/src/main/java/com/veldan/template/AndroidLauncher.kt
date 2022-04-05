@@ -6,15 +6,11 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
 import com.veldan.template.databinding.ActivityMainBinding
-import com.veldan.template.utils.log
 import kotlin.system.exitProcess
 
 class AndroidLauncher : FragmentActivity(), AndroidFragmentApplication.Callbacks {
 
-    companion object {
-        private lateinit var binding: ActivityMainBinding
-    }
-
+    lateinit var binding      : ActivityMainBinding
     lateinit var navController: NavController
 
 
